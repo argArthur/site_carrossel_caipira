@@ -46,21 +46,30 @@ const controls = new OrbitControls(camera, renderer.domElement);
 
 const assetLoader = new GLTFLoader();
 
+let robot;
 assetLoader.load('./carrossel.glb', (gltf) => {
-  const model = gltf.scene;
-  model.position.y = 1;
-  scene.add(model);
+  robot = gltf.scene;
+  robot.position.y = 1;
+  scene.add(robot);
+  loaded();
 }, undefined, console.error);
 
-function moveCamera() {
+
+const cameraSpeed = -0.2;
+
+function loaded() {
+  robot.position.x = 1;
+  function moveCamera() {
     const t = document.body.getBoundingClientRect().top;
-    camera.position.z = t * -0.2 + initialZ;
+    camera.position.z = t * cameraSpeed + initialZ;
     camera.position.x = t * -0.04;
     camera.position.y = t * -0.04;
-}
 
-moveCamera();
-document.body.onscroll = moveCamera;
+    robot.position.z = t * cameraSpeed;
+  }
+  moveCamera();
+  document.body.onscroll = moveCamera;
+}
 
 function animate() {
     requestAnimationFrame(animate);
