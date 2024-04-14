@@ -1,0 +1,27 @@
+canvas  {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+* {
+    color: white;
+}
+
+/* chrome, safari and opera */
+body::-webkit-scrollbar {
+    display:none;
+}
+/* IE, Edge and Firefox */
+body {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+
+main {
+    position: absolute;
+    display:none;
+}
