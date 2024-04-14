@@ -2,6 +2,7 @@ import './css/style.css'
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 const scene = new THREE.Scene();
 
@@ -27,7 +28,8 @@ const sphere = new THREE.Mesh(bgeometry, material);
 sphere.position.z = 15;
 sphere.position.x = 10;
 
-scene.add(box, sphere)
+// scene.add(box, sphere) box covering up robot
+scene.add(sphere);
 
 const pointLight = new THREE.PointLight(0xffffff);
 pointLight.position.set(3, 3, 3);
@@ -41,6 +43,14 @@ const polarHelper = new THREE.PolarGridHelper(30, 30);
 scene.add(lightHelper, gridHelper, polarHelper);
 
 const controls = new OrbitControls(camera, renderer.domElement);
+
+const assetLoader = new GLTFLoader();
+
+assetLoader.load('./carrossel.glb', (gltf) => {
+  const model = gltf.scene;
+  model.position.y = 1;
+  scene.add(model);
+}, undefined, console.error);
 
 function moveCamera() {
     const t = document.body.getBoundingClientRect().top;
