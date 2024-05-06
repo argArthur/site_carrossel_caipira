@@ -31,16 +31,15 @@ sphere.position.x = 10;
 // scene.add(box, sphere) box covering up robot
 scene.add(sphere);
 
-const pointLight = new THREE.PointLight(0xffffff);
-pointLight.position.set(3, 3, 3);
+const pointLight = new THREE.PointLight(0xffffff, 2);
+pointLight.position.set(3, 3, 4);
 
-const ambientLight = new THREE.AmbientLight(0xfff);
+const ambientLight = new THREE.AmbientLight(0xffffff);
 scene.add(pointLight, ambientLight);
 
 const lightHelper = new THREE.PointLightHelper(pointLight);
 const gridHelper = new THREE.GridHelper(30, 30);
-const polarHelper = new THREE.PolarGridHelper(30, 30);
-scene.add(lightHelper, gridHelper, polarHelper);
+scene.add(lightHelper, gridHelper);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
@@ -50,22 +49,27 @@ let robot;
 assetLoader.load('./carrossel.glb', (gltf) => {
   robot = gltf.scene;
   robot.position.y = 1;
+    robot.position.x = 3;
   scene.add(robot);
   loaded();
 }, undefined, console.error);
 
 
-const cameraSpeed = -0.2;
+const cameraSpeed = -0.02;
+
+camera.position.x = 0.5;
+camera.position.y = 1;
 
 function loaded() {
   robot.position.x = 1;
   function moveCamera() {
     const t = document.body.getBoundingClientRect().top;
     camera.position.z = t * cameraSpeed + initialZ;
-    camera.position.x = t * -0.04;
-    camera.position.y = t * -0.04;
+
+    pointLight.position.copy( new THREE.Vector3(-1, 3,4 + t * cameraSpeed));
 
     robot.position.z = t * cameraSpeed;
+    robot.position.x = Math.sin(t * 0.001) * 6 + 3;
   }
   moveCamera();
   document.body.onscroll = moveCamera;
